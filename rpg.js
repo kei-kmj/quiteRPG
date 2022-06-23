@@ -4,32 +4,40 @@ const {Toggle} = require('enquirer')
 // 魔王に勝てる確率50%程度、ゴーレムに勝つ確率95%程度に設定
 const LEVERAGE = 2
 
-function calcAttackScore() {
+function calcAttackScore () {
   // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
   return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
 }
 
 class Brave {
-  constructor() {
+  constructor () {
     this.name = '勇者'
     this.hp = 6
     this.level = 1
     this.offensivePower = 3
   }
 
-  attack() {
+  attack () {
     return calcAttackScore.call(this)
+  }
+
+  levelup () {
+    this.level += 1
+    // 勇者のhpを回復させる
+    this.hp = 5
+    this.hp *= this.level ** LEVERAGE
+    this.offensivePower += this.level ** LEVERAGE
   }
 }
 
 class Monster {
-  constructor(name, hp, offensivePower) {
+  constructor (name, hp, offensivePower) {
     this.name = name
     this.hp = hp
     this.offensivePower = offensivePower
   }
 
-  attack() {
+  attack () {
     // モンスターは成長しない
     return calcAttackScore.call(this)
   }
@@ -67,12 +75,12 @@ helpOrAbandon.run()
   })
   .catch(console.error)
 
-function appear(monster) {
+function appear (monster) {
   console.log(`\n\n${monster.name}が現れた！`)
 }
 
-function battle(monster, preemptiveFlag = 0) {
-  function monsterAttack() {
+function battle (monster, preemptiveFlag = 0) {
+  function monsterAttack () {
     return new Promise((resolve) => {
       setTimeout(() => {
         const receivedScore = monster.attack()
@@ -88,7 +96,7 @@ function battle(monster, preemptiveFlag = 0) {
     })
   }
 
-  function braveAttack() {
+  function braveAttack () {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
@@ -125,27 +133,24 @@ function battle(monster, preemptiveFlag = 0) {
         }
       }
 
-      function showRemainingHp() {
+      function showRemainingHp () {
         console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]：${monster.name}のhp[${Math.max(0, monster.hp)}]\n`)
       }
 
-      function postWinProcess() {
+      function postWinProcess () {
         console.log(`${monster.name}を倒した\n\n`)
         if (devil.hp <= 0) {
           console.log('村に平和が戻った')
         } else {
           console.log('勇者のレベルが1上がった')
-          brave.level += 1
-          // 勇者のhpを回復させる
-          brave.hp = 5
-          brave.hp *= brave.level ** LEVERAGE
-          brave.offensivePower += brave.level ** LEVERAGE
+          brave.levelup()
         }
       }
 
-      function postDefeatProcess() {
+      function postDefeatProcess () {
         console.log('\n\n\n...勇者は死んでしまった')
       }
+
       resolve()
     }, 2000)
   })
