@@ -72,7 +72,7 @@ helpOrAbandon.run()
         }
       }
     } else {
-      appear(devil)
+      devil.appear()
       // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
       battle(devil, 1)
     }
