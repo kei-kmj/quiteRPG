@@ -26,6 +26,15 @@ class Brave {
     console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]\n`)
   }
 
+  damaged (receivedScore) {
+    if (receivedScore === 0) {
+      console.log('miss!')
+    } else {
+      console.log(`勇者は ${receivedScore} のダメージを受けた`)
+    }
+    this.hp -= receivedScore
+  }
+
   levelup () {
     console.log('勇者のレベルが1上がった')
     this.level += 1
@@ -37,6 +46,14 @@ class Brave {
 
   win (monster) {
     console.log(`${monster.name}を倒した\n\n`)
+    if (devil.hp <= 0) {
+      console.log('村に平和が戻った')
+    } else {
+      brave.levelup()
+    }
+  }
+  death(){
+    console.log('\n\n\n...勇者は死んでしまった')
   }
 }
 
@@ -104,12 +121,7 @@ function battle (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const receivedScore = monster.attack()
-        if (receivedScore === 0) {
-          console.log('miss!')
-        } else {
-          console.log(`勇者は ${receivedScore} のダメージを受けた`)
-        }
-        brave.hp -= receivedScore
+        brave.damaged(receivedScore)
         resolve()
       }, 2000)
     })
@@ -139,21 +151,14 @@ function battle (monster, preemptiveFlag = 0) {
           await monsterAttack()
           await brave.showRemainingHp()
           if (brave.hp <= 0) {
-            await console.log('\n\n\n...勇者は死んでしまった')
+            await brave.death()
             break
           }
         }
       }
-
       function postWinProcess () {
         brave.win(monster)
-        if (devil.hp <= 0) {
-          console.log('村に平和が戻った')
-        } else {
-          brave.levelup()
-        }
       }
-
       resolve()
     }, 2000)
   })
