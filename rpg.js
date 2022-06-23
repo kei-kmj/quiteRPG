@@ -79,10 +79,6 @@ helpOrAbandon.run()
   })
   .catch(console.error)
 
-function appear (monster) {
-  console.log(`\n\n${monster.name}が現れた！`)
-}
-
 function battle (monster, preemptiveFlag = 0) {
   function monsterAttack () {
     return new Promise((resolve) => {
