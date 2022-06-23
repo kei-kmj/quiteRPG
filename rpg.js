@@ -27,11 +27,16 @@ class Brave {
   }
 
   levelup () {
+    console.log('勇者のレベルが1上がった')
     this.level += 1
     // 勇者のhpを回復させる
     this.hp = 5
     this.hp *= this.level ** LEVERAGE
     this.offensivePower += this.level ** LEVERAGE
+  }
+
+  win (monster) {
+    console.log(`${monster.name}を倒した\n\n`)
   }
 }
 
@@ -50,6 +55,15 @@ class Monster {
     console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${this.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
     // モンスターは成長しない
     return calcAttackScore.call(this)
+  }
+
+  damaged (givenScore) {
+    if (givenScore === 0) {
+      console.log('miss!')
+    } else {
+      console.log(`${this.name}に ${givenScore} のダメージを与えた`)
+    }
+    this.hp -= givenScore
   }
 }
 
@@ -85,6 +99,15 @@ helpOrAbandon.run()
   })
   .catch(console.error)
 
+function damaged (givenScore, monster) {
+  if (givenScore === 0) {
+    console.log('miss!')
+  } else {
+    console.log(`${monster.name}に ${givenScore} のダメージを与えた`)
+  }
+  monster.hp -= givenScore
+}
+
 function battle (monster, preemptiveFlag = 0) {
   function monsterAttack () {
     return new Promise((resolve) => {
@@ -105,12 +128,7 @@ function battle (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const givenScore = brave.attack()
-        if (givenScore === 0) {
-          console.log('miss!')
-        } else {
-          console.log(`${monster.name}に ${givenScore} のダメージを与えた`)
-        }
-        monster.hp -= givenScore
+        monster.damaged(givenScore, monster)
         resolve()
       }, 2000)
     })
@@ -130,25 +148,21 @@ function battle (monster, preemptiveFlag = 0) {
           await monsterAttack()
           await brave.showRemainingHp()
           if (brave.hp <= 0) {
-            await postDefeatProcess()
+            await console.log('\n\n\n...勇者は死んでしまった')
             break
           }
         }
       }
 
       function postWinProcess () {
-        console.log(`${monster.name}を倒した\n\n`)
+        brave.win(monster)
         if (devil.hp <= 0) {
           console.log('村に平和が戻った')
         } else {
-          console.log('勇者のレベルが1上がった')
           brave.levelup()
         }
       }
 
-      function postDefeatProcess () {
-        console.log('\n\n\n...勇者は死んでしまった')
-      }
       resolve()
     }, 2000)
   })
