@@ -99,15 +99,6 @@ helpOrAbandon.run()
   })
   .catch(console.error)
 
-function damaged (givenScore, monster) {
-  if (givenScore === 0) {
-    console.log('miss!')
-  } else {
-    console.log(`${monster.name}に ${givenScore} のダメージを与えた`)
-  }
-  monster.hp -= givenScore
-}
-
 function battle (monster, preemptiveFlag = 0) {
   function monsterAttack () {
     return new Promise((resolve) => {
