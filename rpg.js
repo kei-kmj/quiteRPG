@@ -22,6 +22,10 @@ class Brave {
     return calcAttackScore.call(this)
   }
 
+  showRemainingHp () {
+    console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]\n`)
+  }
+
   levelup () {
     this.level += 1
     // 勇者のhpを回復させる
@@ -118,14 +122,13 @@ function battle (monster, preemptiveFlag = 0) {
         // 通常は勇者の攻撃から戦闘が始まる
         if (i % 2 === preemptiveFlag) {
           await braveAttack()
-          await showRemainingHp()
           if (monster.hp <= 0) {
             await postWinProcess()
             break
           }
         } else {
           await monsterAttack()
-          await showRemainingHp()
+          await brave.showRemainingHp()
           if (brave.hp <= 0) {
             await postDefeatProcess()
             break
