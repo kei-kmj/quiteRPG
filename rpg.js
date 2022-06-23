@@ -68,10 +68,20 @@ class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-  attack () {
+  readyToAttack () {
     console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${this.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
     // モンスターは成長しない
     return calcAttackScore.call(this)
+  }
+
+  monsterAttack () {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const receivedScore = this.readyToAttack()
+        brave.damaged(receivedScore)
+        resolve()
+      }, 2000)
+    })
   }
 
   damaged (givenScore) {
@@ -131,7 +141,7 @@ function battle (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const givenScore = brave.attack()
-        monster.damaged(givenScore, monster)
+        monster.damaged(givenScore)
         resolve()
       }, 2000)
     })
@@ -144,20 +154,17 @@ function battle (monster, preemptiveFlag = 0) {
         if (i % 2 === preemptiveFlag) {
           await braveAttack()
           if (monster.hp <= 0) {
-            await postWinProcess()
+            await brave.win(monster)
             break
           }
         } else {
-          await monsterAttack()
+          await monster.monsterAttack()
           await brave.showRemainingHp()
           if (brave.hp <= 0) {
             await brave.death()
             break
           }
         }
-      }
-      function postWinProcess () {
-        brave.win(monster)
       }
       resolve()
     }, 2000)
