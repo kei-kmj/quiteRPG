@@ -136,10 +136,6 @@ function battle (monster, preemptiveFlag = 0) {
         }
       }
 
-      function showRemainingHp () {
-        console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]：${monster.name}のhp[${Math.max(0, monster.hp)}]\n`)
-      }
-
       function postWinProcess () {
         console.log(`${monster.name}を倒した\n\n`)
         if (devil.hp <= 0) {
@@ -153,7 +149,6 @@ function battle (monster, preemptiveFlag = 0) {
       function postDefeatProcess () {
         console.log('\n\n\n...勇者は死んでしまった')
       }
-
       resolve()
     }, 2000)
   })
