@@ -37,6 +37,10 @@ class Monster {
     this.offensivePower = offensivePower
   }
 
+  appear () {
+    console.log(`\n\n${this.name}が現れた！`)
+  }
+
   attack () {
     // モンスターは成長しない
     return calcAttackScore.call(this)
@@ -57,13 +61,13 @@ const helpOrAbandon = new Toggle({
 helpOrAbandon.run()
   .then(async answer => {
     if (answer === true) {
-      appear(slime)
+      slime.appear()
       await battle(slime)
       if (slime.hp <= 0) {
-        appear(golem)
+        golem.appear()
         await battle(golem)
         if (golem.hp <= 0) {
-          appear(devil)
+          devil.appear()
           await battle(devil)
         }
       }
