@@ -47,25 +47,25 @@ const helpOrAbandon = new Toggle({
   disabled: '見捨てて立ち去る'
 })
 helpOrAbandon.run()
-    .then(async answer => {
-      if (answer === true) {
-        appear(slime)
-        await battle(slime)
-        if (slime.hp <= 0) {
-          appear(golem)
-          await battle(golem)
-          if (golem.hp <= 0) {
-            appear(devil)
-            await battle(devil)
-          }
+  .then(async answer => {
+    if (answer === true) {
+      appear(slime)
+      await battle(slime)
+      if (slime.hp <= 0) {
+        appear(golem)
+        await battle(golem)
+        if (golem.hp <= 0) {
+          appear(devil)
+          await battle(devil)
         }
-      } else {
-        appear(devil)
-        // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
-        battle(devil, 1)
       }
-    })
-    .catch(console.error)
+    } else {
+      appear(devil)
+      // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
+      battle(devil, 1)
+    }
+  })
+  .catch(console.error)
 
 function appear(monster) {
   console.log(`\n\n${monster.name}が現れた！`)
@@ -76,7 +76,7 @@ function battle(monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const receivedScore = monster.attack()
-        console.log(`⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
+        console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
         if (receivedScore === 0) {
           console.log('miss!')
         } else {
@@ -91,7 +91,7 @@ function battle(monster, preemptiveFlag = 0) {
   function braveAttack() {
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
+        console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
         const givenScore = brave.attack()
         if (givenScore === 0) {
           console.log('miss!')
