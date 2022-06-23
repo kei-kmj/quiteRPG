@@ -42,6 +42,7 @@ class Monster {
   }
 
   attack () {
+    console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${this.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
     // モンスターは成長しない
     return calcAttackScore.call(this)
   }
@@ -84,7 +85,6 @@ function battle (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(() => {
         const receivedScore = monster.attack()
-        console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
         if (receivedScore === 0) {
           console.log('miss!')
         } else {
