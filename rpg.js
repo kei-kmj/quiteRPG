@@ -18,6 +18,7 @@ class Brave {
   }
 
   attack () {
+    console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
     return calcAttackScore.call(this)
   }
 
@@ -99,7 +100,6 @@ function battle (monster, preemptiveFlag = 0) {
   function braveAttack () {
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
         const givenScore = brave.attack()
         if (givenScore === 0) {
           console.log('miss!')
