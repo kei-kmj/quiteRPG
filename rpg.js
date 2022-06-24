@@ -64,7 +64,6 @@ class Brave {
   }
 }
 
-
 class Monster {
   constructor (name, hp, offensivePower) {
     this.name = name
@@ -74,12 +73,6 @@ class Monster {
 
   appear () {
     console.log(`\n\n${this.name}が現れた！`)
-  }
-
-  readyToAttack () {
-    console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${this.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
-    // モンスターは成長しない
-    return calcAttackScore.call(this)
   }
 
   attack () {
@@ -117,25 +110,25 @@ class Story {
         if (answer === true) {
           slime.appear()
 
-          await story.battle(slime)
+          await story.#battle(slime)
           if (slime.hp <= 0) {
             golem.appear()
-            await story.battle(golem)
+            await story.#battle(golem)
             if (golem.hp <= 0) {
               devil.appear()
-              await story.battle(devil)
+              await story.#battle(devil)
             }
           }
         } else {
           devil.appear()
           // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
-          story.battle(devil, 1)
+          story.#battle(devil, 1)
         }
       })
       .catch(console.error)
   }
 
-  battle (monster, preemptiveFlag = 0) {
+  #battle (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(async () => {
         for (let i = 0; ; i++) {
@@ -161,40 +154,9 @@ class Story {
   }
 }
 
-
 const brave = new Brave()
 const slime = new Monster('スライム', 5, 2)
 const golem = new Monster('ゴーレム', 20, 6)
 const devil = new Monster('魔王', 50, 13)
 const story = new Story()
 story.progress()
-
-// console.log('村人：「魔物が村を襲ってきて困っています。」')
-// const helpOrAbandon = new Toggle({
-//   message: '勇者様お願いです。魔物を倒して下さい！',
-//   enabled: '助ける',
-//   disabled: '見捨てて立ち去る'
-// })
-// helpOrAbandon.run()
-//   .then(async answer => {
-//     const story = new Story
-//     if (answer === true) {
-//       slime.appear()
-//
-//       await story.battle(slime)
-//       if (slime.hp <= 0) {
-//         golem.appear()
-//         await story.battle(golem)
-//         if (golem.hp <= 0) {
-//           devil.appear()
-//           await story.battle(devil)
-//         }
-//       }
-//     } else {
-//       devil.appear()
-//       // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
-//       story.battle(devil, 1)
-//     }
-//   })
-//   .catch(console.error)
-
