@@ -13,18 +13,6 @@ class Brave {
     this.offensivePower = 3
   }
 
-  attack (monster) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
-        const givenScore = calcAttackScore.call(this)
-        monster.damaged(givenScore)
-        resolve()
-      }, 2000)
-    })
-
-  }
-
   showRemainingHp () {
     console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]\n`)
   }
@@ -39,7 +27,6 @@ class Brave {
   }
 
   #levelup () {
-    console.log('勇者のレベルが1上がった')
     this.level += 1
     // 勇者のhpを回復させる
     this.hp = 5
@@ -48,6 +35,7 @@ class Brave {
     const LEVERAGE = 2
     this.hp *= this.level ** LEVERAGE
     this.offensivePower += this.level ** LEVERAGE
+    console.log('勇者のレベルが1上がった')
   }
 
   win (monster) {
@@ -75,17 +63,7 @@ class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-  attack () {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${this.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
-        const receivedScore = calcAttackScore.call(this)
-        // モンスターは成長しない
-        brave.damaged(receivedScore)
-        resolve()
-      }, 2000)
-    })
-  }
+
 
   damaged (givenScore) {
     if (givenScore === 0) {
@@ -98,6 +76,27 @@ class Monster {
 }
 
 class Story {
+  braveAttack (monster) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
+        const givenScore = calcAttackScore.call(brave)
+        monster.damaged(givenScore)
+        resolve()
+      }, 2000)
+    })
+  }
+  monsterAttack (monster) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
+        const receivedScore = calcAttackScore.call(monster)
+        // モンスターは成長しない
+        brave.damaged(receivedScore)
+        resolve()
+      }, 2000)
+    })
+  }
   progress () {
     console.log('村人：「魔物が村を襲ってきて困っています。」')
     const helpOrAbandon = new Toggle({
@@ -134,13 +133,13 @@ class Story {
         for (let i = 0; ; i++) {
           // 通常は勇者の攻撃から戦闘が始まる
           if (i % 2 === preemptiveFlag) {
-            await brave.attack(monster)
+            await story.braveAttack(monster)
             if (monster.hp <= 0) {
               await brave.win(monster)
               break
             }
           } else {
-            await monster.attack()
+            await story.monsterAttack(monster)
             await brave.showRemainingHp()
             if (brave.hp <= 0) {
               await brave.death()
