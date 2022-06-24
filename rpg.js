@@ -17,16 +17,7 @@ class Brave {
     console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]\n`)
   }
 
-  damaged (receivedScore) {
-    if (receivedScore === 0) {
-      console.log('miss!')
-    } else {
-      console.log(`勇者は ${receivedScore} のダメージを受けた`)
-    }
-    this.hp -= receivedScore
-  }
-
-  #levelup () {
+  levelup () {
     this.level += 1
     // 勇者のhpを回復させる
     this.hp = 5
@@ -38,16 +29,7 @@ class Brave {
     console.log('勇者のレベルが1上がった')
   }
 
-  win (monster) {
-    console.log(`${monster.name}を倒した\n\n`)
-    if (devil.hp <= 0) {
-      console.log('村に平和が戻った')
-    } else {
-      brave.#levelup()
-    }
-  }
-
-  death () {
+    death () {
     console.log('\n\n\n...勇者は死んでしまった')
   }
 }
@@ -63,16 +45,6 @@ class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-
-
-  damaged (givenScore) {
-    if (givenScore === 0) {
-      console.log('miss!')
-    } else {
-      console.log(`${this.name}に ${givenScore} のダメージを与えた`)
-    }
-    this.hp -= givenScore
-  }
 }
 
 class Story {
@@ -81,22 +53,42 @@ class Story {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
         const givenScore = calcAttackScore.call(brave)
-        monster.damaged(givenScore)
+        if (givenScore === 0) {
+          console.log('miss!')
+        } else {
+          console.log(`${monster.name}に ${givenScore} のダメージを与えた`)
+        }
+        monster.hp -= givenScore
         resolve()
       }, 2000)
     })
   }
+
   monsterAttack (monster) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
         const receivedScore = calcAttackScore.call(monster)
         // モンスターは成長しない
-        brave.damaged(receivedScore)
+        if (receivedScore === 0) {
+          console.log('miss!')
+        } else {
+          console.log(`勇者は ${receivedScore} のダメージを受けた`)
+        }
+        brave.hp -= receivedScore
         resolve()
       }, 2000)
     })
   }
+  win (monster) {
+    console.log(`${monster.name}を倒した\n\n`)
+    if (devil.hp <= 0) {
+      console.log('村に平和が戻った')
+    } else {
+      brave.levelup()
+    }
+  }
+
   progress () {
     console.log('村人：「魔物が村を襲ってきて困っています。」')
     const helpOrAbandon = new Toggle({
@@ -135,7 +127,7 @@ class Story {
           if (i % 2 === preemptiveFlag) {
             await story.braveAttack(monster)
             if (monster.hp <= 0) {
-              await brave.win(monster)
+              await story.win(monster)
               break
             }
           } else {
