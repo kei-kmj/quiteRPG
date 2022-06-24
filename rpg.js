@@ -17,9 +17,16 @@ class Brave {
     this.offensivePower = 3
   }
 
-  attack () {
-    console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
-    return calcAttackScore.call(this)
+  attack (monster) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
+        const givenScore = calcAttackScore.call(this)
+        monster.damaged(givenScore)
+        resolve()
+      }, 2000)
+    })
+
   }
 
   showRemainingHp () {
@@ -35,7 +42,7 @@ class Brave {
     this.hp -= receivedScore
   }
 
-  levelup () {
+  #levelup () {
     console.log('勇者のレベルが1上がった')
     this.level += 1
     // 勇者のhpを回復させる
@@ -49,10 +56,11 @@ class Brave {
     if (devil.hp <= 0) {
       console.log('村に平和が戻った')
     } else {
-      brave.levelup()
+      brave.#levelup()
     }
   }
-  death(){
+
+  death () {
     console.log('\n\n\n...勇者は死んでしまった')
   }
 }
@@ -74,7 +82,7 @@ class Monster {
     return calcAttackScore.call(this)
   }
 
-  monsterAttack () {
+  attack () {
     return new Promise((resolve) => {
       setTimeout(() => {
         const receivedScore = this.readyToAttack()
@@ -127,38 +135,18 @@ helpOrAbandon.run()
   .catch(console.error)
 
 function battle (monster, preemptiveFlag = 0) {
-  function monsterAttack () {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const receivedScore = monster.attack()
-        brave.damaged(receivedScore)
-        resolve()
-      }, 2000)
-    })
-  }
-
-  function braveAttack () {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const givenScore = brave.attack()
-        monster.damaged(givenScore)
-        resolve()
-      }, 2000)
-    })
-  }
-
   return new Promise((resolve) => {
     setTimeout(async () => {
       for (let i = 0; ; i++) {
         // 通常は勇者の攻撃から戦闘が始まる
         if (i % 2 === preemptiveFlag) {
-          await braveAttack()
+          await brave.attack(monster)
           if (monster.hp <= 0) {
             await brave.win(monster)
             break
           }
         } else {
-          await monster.monsterAttack()
+          await monster.attack()
           await brave.showRemainingHp()
           if (brave.hp <= 0) {
             await brave.death()
