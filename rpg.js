@@ -1,9 +1,5 @@
 const {Toggle} = require('enquirer')
 
-// 勇者のhpとmaxPowerの上昇にレバレッジを効かせ,
-// 魔王に勝てる確率50%程度、ゴーレムに勝つ確率95%程度に設定
-const LEVERAGE = 2
-
 function calcAttackScore () {
   // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
   return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
@@ -47,6 +43,9 @@ class Brave {
     this.level += 1
     // 勇者のhpを回復させる
     this.hp = 5
+    // 勇者のhpとmaxPowerの上昇にレバレッジを効かせ,
+    // 魔王に勝てる確率50%程度、ゴーレムに勝つ確率95%程度に設定
+    const LEVERAGE = 2
     this.hp *= this.level ** LEVERAGE
     this.offensivePower += this.level ** LEVERAGE
   }
@@ -60,10 +59,13 @@ class Brave {
     }
   }
 
+  s
+
   death () {
     console.log('\n\n\n...勇者は死んでしまった')
   }
 }
+
 
 class Monster {
   constructor (name, hp, offensivePower) {
@@ -115,46 +117,50 @@ const helpOrAbandon = new Toggle({
 })
 helpOrAbandon.run()
   .then(async answer => {
+    const story = new Story
     if (answer === true) {
       slime.appear()
-      await battle(slime)
+
+      await story.battle(slime)
       if (slime.hp <= 0) {
         golem.appear()
-        await battle(golem)
+        await story.battle(golem)
         if (golem.hp <= 0) {
           devil.appear()
-          await battle(devil)
+          await story.battle(devil)
         }
       }
     } else {
       devil.appear()
       // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
-      battle(devil, 1)
+      story.battle(devil, 1)
     }
   })
   .catch(console.error)
 
-function battle (monster, preemptiveFlag = 0) {
-  return new Promise((resolve) => {
-    setTimeout(async () => {
-      for (let i = 0; ; i++) {
-        // 通常は勇者の攻撃から戦闘が始まる
-        if (i % 2 === preemptiveFlag) {
-          await brave.attack(monster)
-          if (monster.hp <= 0) {
-            await brave.win(monster)
-            break
-          }
-        } else {
-          await monster.attack()
-          await brave.showRemainingHp()
-          if (brave.hp <= 0) {
-            await brave.death()
-            break
+class Story {
+  battle (monster, preemptiveFlag = 0) {
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        for (let i = 0; ; i++) {
+          // 通常は勇者の攻撃から戦闘が始まる
+          if (i % 2 === preemptiveFlag) {
+            await brave.attack(monster)
+            if (monster.hp <= 0) {
+              await brave.win(monster)
+              break
+            }
+          } else {
+            await monster.attack()
+            await brave.showRemainingHp()
+            if (brave.hp <= 0) {
+              await brave.death()
+              break
+            }
           }
         }
-      }
-      resolve()
-    }, 2000)
-  })
+        resolve()
+      }, 2000)
+    })
+  }
 }
