@@ -7,7 +7,7 @@ module.exports = class Brave {
   }
 
   showRemainingHp () {
-    console.log(`\n勇者のhp[${Math.max(0, this.hp)}]\n`)
+    console.log(`\n勇者のHP[${Math.max(0, this.hp)}]\n`)
   }
 
   levelup () {

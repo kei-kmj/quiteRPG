@@ -1,5 +1,4 @@
 const Brave = require('./brave')
-const Monster = require('./monster')
 
 module.exports = class Battle {
   showdown (monster, preemptiveFlag = 0) {
@@ -36,7 +35,7 @@ module.exports = class Battle {
         if (givenScore === 0) {
           console.log('miss!')
         } else {
-          console.log(`${monster.name}に ${givenScore} のダメージを与えた`)
+          console.log(`${monster.name}に ${givenScore} ポイントのダメージを与えた`)
         }
         monster.hp -= givenScore
         resolve()
@@ -60,7 +59,7 @@ module.exports = class Battle {
         if (receivedScore === 0) {
           console.log('miss!')
         } else {
-          console.log(`勇者は ${receivedScore} のダメージを受けた`)
+          console.log(`勇者は ${receivedScore} ポイントのダメージを受けた`)
         }
         brave.hp -= receivedScore
         resolve()
