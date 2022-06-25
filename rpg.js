@@ -7,8 +7,33 @@ function calcAttackScore () {
   return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
 }
 
-class Story {
-  braveAttack (monster) {
+class Battle {
+  showdown (monster, preemptiveFlag = 0) {
+    return new Promise((resolve) => {
+      setTimeout(async () => {
+        for (let i = 0; ; i++) {
+          // 通常は勇者の攻撃から戦闘が始まる
+          if (i % 2 === preemptiveFlag) {
+            await this.#braveAttack(monster)
+            if (monster.hp <= 0) {
+              await this.#win(monster)
+              break
+            }
+          } else {
+            await this.#monsterAttack(monster)
+            await brave.showRemainingHp()
+            if (brave.hp <= 0) {
+              await brave.death()
+              break
+            }
+          }
+        }
+        resolve()
+      }, 2000)
+    })
+  }
+
+  #braveAttack (monster) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
@@ -24,7 +49,7 @@ class Story {
     })
   }
 
-  monsterAttack (monster) {
+  #monsterAttack (monster) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
@@ -40,7 +65,8 @@ class Story {
       }, 2000)
     })
   }
-  win (monster) {
+
+  #win (monster) {
     console.log(`${monster.name}を倒した\n\n`)
     if (devil.hp <= 0) {
       console.log('村に平和が戻った')
@@ -48,6 +74,9 @@ class Story {
       brave.levelup()
     }
   }
+}
+
+class Story {
 
   progress () {
     console.log('村人：「魔物が村を襲ってきて困っています。」')
@@ -58,50 +87,26 @@ class Story {
     })
     helpOrAbandon.run()
       .then(async answer => {
+        const battle = new Battle()
         if (answer === true) {
           slime.appear()
 
-          await story.#battle(slime)
+          await battle.showdown(slime)
           if (slime.hp <= 0) {
             golem.appear()
-            await story.#battle(golem)
+            await battle.showdown(golem)
             if (golem.hp <= 0) {
               devil.appear()
-              await story.#battle(devil)
+              await battle.showdown(devil)
             }
           }
         } else {
           devil.appear()
           // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
-          story.#battle(devil, 1)
+          battle.showdown(devil, 1)
         }
       })
       .catch(console.error)
-  }
-
-  #battle (monster, preemptiveFlag = 0) {
-    return new Promise((resolve) => {
-      setTimeout(async () => {
-        for (let i = 0; ; i++) {
-          // 通常は勇者の攻撃から戦闘が始まる
-          if (i % 2 === preemptiveFlag) {
-            await story.braveAttack(monster)
-            if (monster.hp <= 0) {
-              await story.win(monster)
-              break
-            }
-          } else {
-            await story.monsterAttack(monster)
-            await brave.showRemainingHp()
-            if (brave.hp <= 0) {
-              await brave.death()
-              break
-            }
-          }
-        }
-        resolve()
-      }, 2000)
-    })
   }
 }
 
