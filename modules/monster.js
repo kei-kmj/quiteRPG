@@ -8,5 +8,4 @@ module.exports = class Monster {
   appear () {
     console.log(`\n\n${this.name}が現れた！`)
   }
-
 }
