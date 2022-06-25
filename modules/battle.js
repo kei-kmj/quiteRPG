@@ -75,5 +75,4 @@ module.exports = class Battle {
 
   }
 }
-
 const brave = new Brave()
