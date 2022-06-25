@@ -1,50 +1,10 @@
+const Brave = require('./modules/brave')
+const Monster = require('./modules/monster')
 const {Toggle} = require('enquirer')
 
 function calcAttackScore () {
   // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
   return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
-}
-
-class Brave {
-  constructor () {
-    this.name = '勇者'
-    this.hp = 6
-    this.level = 1
-    this.offensivePower = 3
-  }
-
-  showRemainingHp () {
-    console.log(`\n勇者のhp[${Math.max(0, brave.hp)}]\n`)
-  }
-
-  levelup () {
-    this.level += 1
-    // 勇者のhpを回復させる
-    this.hp = 5
-    // 勇者のhpとmaxPowerの上昇にレバレッジを効かせ,
-    // 魔王に勝てる確率50%程度、ゴーレムに勝つ確率95%程度に設定
-    const LEVERAGE = 2
-    this.hp *= this.level ** LEVERAGE
-    this.offensivePower += this.level ** LEVERAGE
-    console.log('勇者のレベルが1上がった')
-  }
-
-    death () {
-    console.log('\n\n\n...勇者は死んでしまった')
-  }
-}
-
-class Monster {
-  constructor (name, hp, offensivePower) {
-    this.name = name
-    this.hp = hp
-    this.offensivePower = offensivePower
-  }
-
-  appear () {
-    console.log(`\n\n${this.name}が現れた！`)
-  }
-
 }
 
 class Story {
