@@ -1,7 +1,7 @@
 module.exports = class Brave {
   constructor () {
     this.name = '勇者'
-    this.hp = 6
+    this.hp = 5
     this.level = 1
     this.offensivePower = 3
   }
