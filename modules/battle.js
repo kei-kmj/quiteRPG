@@ -70,13 +70,11 @@ module.exports = class Battle {
 
   #win (monster) {
     console.log(`${monster.name}を倒した\n\n`)
-    const devil = new Monster('魔王', 50, 13)
-    if (devil.hp <= 0) {
-      console.log('村に平和が戻った')
-    } else {
+    if (monster.name !== "魔王") {
       brave.levelup()
     }
+
   }
 }
-const brave = new Brave()
 
+const brave = new Brave()
