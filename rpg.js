@@ -2,11 +2,6 @@ const Brave = require('./modules/brave')
 const Monster = require('./modules/monster')
 const {Toggle} = require('enquirer')
 
-function calcAttackScore () {
-  // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
-  return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
-}
-
 class Battle {
   showdown (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
@@ -37,7 +32,7 @@ class Battle {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
-        const givenScore = calcAttackScore.call(brave)
+        const givenScore = this.#calcAttackScore().call(brave)
         if (givenScore === 0) {
           console.log('miss!')
         } else {
@@ -49,11 +44,18 @@ class Battle {
     })
   }
 
+  #calcAttackScore () {
+    return function () {
+      // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
+      return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
+    };
+  }
+
   #monsterAttack (monster) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
-        const receivedScore = calcAttackScore.call(monster)
+        const receivedScore = this.#calcAttackScore().call(monster)
         // モンスターは成長しない
         if (receivedScore === 0) {
           console.log('miss!')
