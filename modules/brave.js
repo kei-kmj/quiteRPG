@@ -10,6 +10,12 @@ module.exports = class Brave {
     console.log(`\n勇者のHP[${Math.max(0, this.hp)}]\n`)
   }
 
+  calcAttackScore () {
+    // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
+    return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
+  }
+
+
   levelup () {
     this.level += 1
     // 勇者のhpを回復させる
