@@ -22,6 +22,10 @@ module.exports = class Brave {
     console.log('勇者のレベルが1上がった')
   }
 
+  isDead () {
+    return this.hp <= 0
+  }
+
   death () {
     console.log('\n\n\n...勇者は死んでしまった')
   }

@@ -9,7 +9,7 @@ module.exports = class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-  isDead (monster) {
-    monster.hp <= 0
+  isDead () {
+    return this.hp <= 0
   }
 }

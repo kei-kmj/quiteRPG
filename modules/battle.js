@@ -9,14 +9,14 @@ module.exports = class Battle {
           // 通常は勇者の攻撃から戦闘が始まる
           if (i % 2 === preemptiveFlag) {
             await this.#braveAttack(monster)
-            if (monster.hp <= 0) {
+            if (monster.isDead(monster)) {
               await this.#win(monster)
               break
             }
           } else {
             await this.#monsterAttack(monster)
             await brave.showRemainingHp()
-            if (brave.hp <= 0) {
+            if (brave.isDead()) {
               await brave.death()
               break
             }

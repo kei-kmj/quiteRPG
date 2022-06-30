@@ -2,10 +2,6 @@ const Monster = require('./monster')
 const Battle = require('./battle')
 const {Toggle} = require('enquirer')
 
-function getB (monster) {
-  return monster.hp <= 0;
-}
-
 module.exports = class Story {
 
   progress () {
@@ -21,13 +17,13 @@ module.exports = class Story {
         if (answer === true) {
           slime.appear()
           await battle.showdown(slime)
-          if (slime.isDead) {
+          if (slime.isDead()) {
             golem.appear()
             await battle.showdown(golem)
-            if (golem.isDead) {
+            if (golem.isDead()) {
               devil.appear()
               await battle.showdown(devil)
-              if (devil.isDead) {
+              if (devil.isDead()) {
                 console.log('村に平和が戻った')
               }
             }
@@ -43,4 +39,4 @@ module.exports = class Story {
 }
 const slime = new Monster('スライム', 5, 2)
 const golem = new Monster('ゴーレム', 20, 6)
-const devil = new Monster('魔王', 50, 13)
+const devil = new Monster('魔王', 50, 30)
