@@ -39,4 +39,4 @@ module.exports = class Story {
 }
 const slime = new Monster('スライム', 5, 2)
 const golem = new Monster('ゴーレム', 20, 6)
-const devil = new Monster('魔王', 50, 30)
+const devil = new Monster('魔王', 50, 13)

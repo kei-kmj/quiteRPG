@@ -26,6 +26,7 @@ module.exports = class Brave {
     this.hp *= this.level ** LEVERAGE
     this.offensivePower += this.level ** LEVERAGE
     console.log('勇者のレベルが1上がった')
+    return new Brave()
   }
 
   isDead () {

@@ -8,7 +8,7 @@ module.exports = class Battle {
         for (let i = 0; ; i++) {
           // 通常は勇者の攻撃から戦闘が始まる
           if (i % 2 === preemptiveFlag) {
-            await this.#braveAttack(monster)
+            await monster.attack(monster)
             if (monster.isDead(monster)) {
               await this.#win(monster)
               break
@@ -27,34 +27,29 @@ module.exports = class Battle {
     })
   }
 
-  #braveAttack (monster) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
-        const givenScore = brave.calcAttackScore()
-        if (givenScore === 0) {
-          console.log('miss!')
-        } else {
-          console.log(`${monster.name}に ${givenScore} ポイントのダメージを与えた`)
-        }
-        monster.hp -= givenScore
-        resolve()
-      }, 2000)
-    })
-  }
-
-  #calcAttackScore () {
-    return function () {
-      // offensivePowerに近い乱数の出現頻度を指数関数的に高くする
-      return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
-    }
-  }
+  // #braveAttack (monster) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
+  //       const givenScore = brave.calcAttackScore()
+  //       console.log(this.level)
+  //       console.log(this.offensivePower)
+  //       if (givenScore === 0) {
+  //         console.log('miss!')
+  //       } else {
+  //         console.log(`${monster.name}に ${givenScore} ポイントのダメージを与えた`)
+  //       }
+  //       monster.hp -= givenScore
+  //       resolve()
+  //     }, 2000)
+  //   })
+  // }
 
   #monsterAttack (monster) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
-        const receivedScore = this.#calcAttackScore().call(monster)
+        const receivedScore = monster.calcAttackScore()
         // モンスターは成長しない
         if (receivedScore === 0) {
           console.log('miss!')
