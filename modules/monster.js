@@ -1,5 +1,3 @@
-const Brave = require('./brave')
-
 module.exports = class Monster {
   constructor (name, hp, offensivePower) {
     this.name = name
@@ -11,19 +9,17 @@ module.exports = class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-  attack (monster) {
+  attack (monster, damageScore) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
-        const givenScore = brave.calcAttackScore()
-        console.log(brave.level)
-        console.log(brave.offensivePower)
-        if (givenScore === 0) {
+
+        if (damageScore === 0) {
           console.log('miss!')
         } else {
-          console.log(`${monster.name}に ${givenScore} ポイントのダメージを与えた`)
+          console.log(`${monster.name}に ${damageScore} ポイントのダメージを与えた`)
         }
-        monster.hp -= givenScore
+        monster.hp -= damageScore
         resolve()
       }, 2000)
     })
@@ -39,4 +35,3 @@ module.exports = class Monster {
     return this.hp <= 0
   }
 }
-const brave = new Brave()
