@@ -15,6 +15,22 @@ module.exports = class Brave {
     return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
   }
 
+  attack (monster, damageAmount) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
+        //const receivedScore = monster.calcAttackScore()
+        // モンスターは成長しない
+        if (damageAmount === 0) {
+          console.log('miss!')
+        } else {
+          console.log(`勇者は ${damageAmount} ポイントのダメージを受けた`)
+        }
+        this.hp -= damageAmount
+        resolve()
+      }, 2000)
+    })
+  }
 
   levelup () {
     this.level += 1

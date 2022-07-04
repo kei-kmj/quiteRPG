@@ -9,17 +9,17 @@ module.exports = class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-  attack (monster, damageScore) {
+  attack (monster, damageAmount) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
 
-        if (damageScore === 0) {
+        if (damageAmount === 0) {
           console.log('miss!')
         } else {
-          console.log(`${monster.name}に ${damageScore} ポイントのダメージを与えた`)
+          console.log(`${monster.name}に ${damageAmount} ポイントのダメージを与えた`)
         }
-        monster.hp -= damageScore
+        monster.hp -= damageAmount
         resolve()
       }, 2000)
     })
