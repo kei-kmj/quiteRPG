@@ -19,8 +19,6 @@ module.exports = class Brave {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
-        //const receivedScore = monster.calcAttackScore()
-        // モンスターは成長しない
         if (damageAmount === 0) {
           console.log('miss!')
         } else {
