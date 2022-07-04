@@ -9,7 +9,7 @@ module.exports = class Monster {
     console.log(`\n\n${this.name}が現れた！`)
   }
 
-  attack (monster, damageAmount) {
+  attacked (monster, damageAmount) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')

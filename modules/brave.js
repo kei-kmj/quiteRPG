@@ -15,7 +15,7 @@ module.exports = class Brave {
     return Math.floor((1 - Math.random() * Math.random()) * this.offensivePower)
   }
 
-  attack (monster, damageAmount) {
+  attacked (monster, damageAmount) {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)

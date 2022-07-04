@@ -9,14 +9,14 @@ module.exports = class Battle {
           // 通常は勇者の攻撃から戦闘が始まる
           if (i % 2 === preemptiveFlag) {
             const damageAmount = brave.calcAttackScore()
-            await monster.attack(monster, damageAmount)
+            await monster.attacked(monster, damageAmount)
             if (monster.isDead(monster)) {
               await this.#win(monster)
               break
             }
           } else {
             const damageAmount = monster.calcAttackScore()
-            await brave.attack(monster, damageAmount)
+            await brave.attacked(monster, damageAmount)
             await brave.showRemainingHp()
             if (brave.isDead()) {
               await brave.death()
