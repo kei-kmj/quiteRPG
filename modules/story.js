@@ -16,13 +16,13 @@ module.exports = class Story {
         const battle = new Battle()
         if (answer === true) {
           slime.appear()
-          await battle.showdown(slime)
+          await battle.start(slime)
           if (slime.isDead()) {
             golem.appear()
-            await battle.showdown(golem)
+            await battle.start(golem)
             if (golem.isDead()) {
               devil.appear()
-              await battle.showdown(devil)
+              await battle.start(devil)
               if (devil.isDead()) {
                 console.log('村に平和が戻った')
               }
@@ -31,7 +31,7 @@ module.exports = class Story {
         } else {
           devil.appear()
           // 「見捨てて立ち去る」を選ぶと魔王の攻撃から戦闘開始する
-          battle.showdown(devil, 1)
+          battle.start(devil, 1)
         }
       })
       .catch(console.error)

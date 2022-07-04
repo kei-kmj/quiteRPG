@@ -1,7 +1,7 @@
 const Brave = require('./brave')
 
 module.exports = class Battle {
-  showdown (monster, preemptiveFlag = 0) {
+  start (monster, preemptiveFlag = 0) {
     return new Promise((resolve) => {
       setTimeout(async () => {
         await brave.showRemainingHp()
@@ -24,41 +24,6 @@ module.exports = class Battle {
             }
           }
         }
-        resolve()
-      }, 2000)
-    })
-  }
-
-  // #braveAttack (monster) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       console.log('\n\n⚔ ⚔ ⚔ ⚔ ⚔ 勇者の攻撃 ⚔ ⚔ ⚔ ⚔ ⚔')
-  //       const givenScore = brave.calcAttackScore()
-  //       console.log(this.level)
-  //       console.log(this.offensivePower)
-  //       if (givenScore === 0) {
-  //         console.log('miss!')
-  //       } else {
-  //         console.log(`${monster.name}に ${givenScore} ポイントのダメージを与えた`)
-  //       }
-  //       monster.hp -= givenScore
-  //       resolve()
-  //     }, 2000)
-  //   })
-  // }
-
-  #monsterAttack (monster) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log(`\n\n⬟ ⬟ ⬟ ⬟ ⬟ ${monster.name}の攻撃 ⬟ ⬟ ⬟ ⬟ ⬟`)
-        const receivedScore = monster.calcAttackScore()
-        // モンスターは成長しない
-        if (receivedScore === 0) {
-          console.log('miss!')
-        } else {
-          console.log(`勇者は ${receivedScore} ポイントのダメージを受けた`)
-        }
-        brave.hp -= receivedScore
         resolve()
       }, 2000)
     })
