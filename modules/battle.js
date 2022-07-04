@@ -34,7 +34,6 @@ module.exports = class Battle {
     if (monster.name !== "魔王") {
       brave.levelup()
     }
-
   }
 }
 const brave = new Brave()
