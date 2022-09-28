@@ -7,5 +7,5 @@ Defeat the demons and restore peace to the village!
 ## Installation
 npm install quite_rpg
 
-
+## License
 MIT
